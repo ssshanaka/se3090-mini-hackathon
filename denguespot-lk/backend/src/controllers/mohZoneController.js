@@ -1,5 +1,6 @@
 import { MOH_ZONE_SEED } from '../constants/mohZonesSeed.js';
 import MohZone from '../models/MohZone.js';
+import { syncAllZonesActiveCases } from './reportController.js';
 
 export const getMohZones = async (req, res) => {
   try {
@@ -9,6 +10,7 @@ export const getMohZones = async (req, res) => {
     if (zones.length === 0) {
       console.log('Auto-seeding MOH Zones collection...');
       await MohZone.insertMany(MOH_ZONE_SEED);
+      await syncAllZonesActiveCases();
       zones = await MohZone.find({});
     }
 

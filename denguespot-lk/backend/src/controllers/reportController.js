@@ -92,6 +92,29 @@ async function syncZoneActiveCases(mohDivision) {
   }
 }
 
+export async function syncAllZonesActiveCases() {
+  try {
+    const zones = await MohZone.find({}, 'mohName');
+    console.log(`Starting global sync for ${zones.length} zones...`);
+    for (const zone of zones) {
+      await syncZoneActiveCases(zone.mohName);
+    }
+    console.log('Global sync completed successfully.');
+  } catch (err) {
+    console.error('Error during global sync:', err);
+  }
+}
+
+export async function triggerSyncAll(req, res) {
+  try {
+    await syncAllZonesActiveCases();
+    return res.status(200).json({ success: true, message: 'Global sync completed successfully.' });
+  } catch (error) {
+    console.error('triggerSyncAll error:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error during sync.' });
+  }
+}
+
 // ── POST /api/reports ────────────────────────────────────────────────────────
 export async function createReport(req, res) {
   try {
