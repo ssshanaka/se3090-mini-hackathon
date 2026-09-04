@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const phiCards = ['Pending Reports', 'Risk Triage', 'Verified Hazards', 'Resolved Cases'];
@@ -8,24 +8,7 @@ export default function MainLanding() {
   const isPhi = user.role === 'phi';
 
   if (isPhi) {
-    return (
-      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <p className="text-sm font-bold tracking-widest text-brand-700 uppercase">{user.mohDivision} MOH Division</p>
-        <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">PHI Officer Dashboard</h1>
-        <p className="mt-3 max-w-2xl text-slate-600">
-          Welcome, {user.fullName}. These are temporary workspace shortcuts for this hackathon prototype.{' '}
-          <span className="font-bold text-brand-700">UI is currently under development separately.</span>
-        </p>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {phiCards.map((card) => (
-            <article key={card} className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-bold text-slate-900">{card}</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">Coming in a future phase.</p>
-            </article>
-          ))}
-        </div>
-      </section>
-    );
+    return <Navigate to="/phi-dashboard" replace />;
   }
 
   // Resident Main Landing UI
