@@ -1,4 +1,5 @@
 import HazardReport from '../models/HazardReport.js';
+import MohZone from '../models/MohZone.js';
 import { DISTRICTS, WESTERN_PROVINCE_MOH_ZONES } from '../constants/mohZones.js';
 
 // ── District → MOH division mapping (used for cross-validation) ──────────────
@@ -69,6 +70,28 @@ function validateReport(body) {
   return errors;
 }
 
+// ── Sync Helper ──────────────────────────────────────────────────────────────
+async function syncZoneActiveCases(mohDivision) {
+  try {
+    const activeCount = await HazardReport.countDocuments({
+      mohDivision,
+      status: { $in: ['Pending', 'Inspected'] }
+    });
+
+    let riskLevel = 'Low';
+    if (activeCount > 100) riskLevel = 'High';
+    else if (activeCount > 50) riskLevel = 'Moderate';
+
+    await MohZone.findOneAndUpdate(
+      { mohName: mohDivision },
+      { activeCases: activeCount, riskLevel },
+      { new: true }
+    );
+  } catch (err) {
+    console.error('Error syncing active cases for', mohDivision, err);
+  }
+}
+
 // ── POST /api/reports ────────────────────────────────────────────────────────
 export async function createReport(req, res) {
   try {
@@ -89,6 +112,8 @@ export async function createReport(req, res) {
       imagePublicId: req.body.imagePublicId || undefined,
     });
 
+    await syncZoneActiveCases(req.body.mohDivision);
+
     return res.status(201).json({ success: true, data: report });
   } catch (error) {
     console.error('createReport error:', error);
@@ -103,6 +128,43 @@ export async function getReports(_req, res) {
     return res.status(200).json({ success: true, data: reports });
   } catch (error) {
     console.error('getReports error:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+}
+
+// ── GET /api/reports/zone/:mohName ───────────────────────────────────────────
+export async function getReportsByZone(req, res) {
+  try {
+    const { mohName } = req.params;
+    const reports = await HazardReport.find({ mohDivision: mohName }).sort({ createdAt: -1 });
+    return res.status(200).json({ success: true, data: reports });
+  } catch (error) {
+    console.error('getReportsByZone error:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+}
+
+// ── PATCH /api/reports/:id/status ────────────────────────────────────────────
+export async function updateReportStatus(req, res) {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    if (!['Pending', 'Inspected', 'Cleared'].includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status' });
+    }
+
+    const report = await HazardReport.findByIdAndUpdate(id, { status }, { new: true });
+    
+    if (!report) {
+      return res.status(404).json({ success: false, message: 'Report not found' });
+    }
+
+    await syncZoneActiveCases(report.mohDivision);
+
+    return res.status(200).json({ success: true, data: report });
+  } catch (error) {
+    console.error('updateReportStatus error:', error);
     return res.status(500).json({ success: false, message: 'Internal server error.' });
   }
 }

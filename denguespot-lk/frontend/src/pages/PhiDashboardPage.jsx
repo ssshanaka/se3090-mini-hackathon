@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function PhiDashboardPage() {
@@ -7,6 +8,7 @@ export default function PhiDashboardPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [riskFilter, setRiskFilter] = useState('All');
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('/api/moh-zones')
@@ -117,7 +119,11 @@ export default function PhiDashboardPage() {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredZones.map((zone) => (
-            <article key={zone.id} className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
+            <article 
+              key={zone._id} 
+              onClick={() => navigate(`/phi-dashboard/zone/${zone.mohName}`)}
+              className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col h-full hover:border-brand-300"
+            >
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h3 className="text-xl font-bold text-slate-900">{zone.mohName}</h3>
