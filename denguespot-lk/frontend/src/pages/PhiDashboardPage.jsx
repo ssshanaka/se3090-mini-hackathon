@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { apiUrl } from '../services/apiConfig';
 
 export default function PhiDashboardPage() {
   const { user } = useAuth();
@@ -11,7 +12,7 @@ export default function PhiDashboardPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('/api/moh-zones')
+    fetch(apiUrl('/api/moh-zones'))
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {

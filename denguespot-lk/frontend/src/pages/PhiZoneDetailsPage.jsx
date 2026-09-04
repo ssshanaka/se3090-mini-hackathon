@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { apiUrl } from '../services/apiConfig';
 
 export default function PhiZoneDetailsPage() {
   const { id } = useParams(); // Using the MOH Name string from the URL
@@ -8,7 +9,7 @@ export default function PhiZoneDetailsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/reports/zone/${id}`)
+    fetch(apiUrl(`/api/reports/zone/${encodeURIComponent(id)}`))
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -21,7 +22,7 @@ export default function PhiZoneDetailsPage() {
 
   const updateReportStatus = async (reportId, newStatus) => {
     try {
-      const response = await fetch(`/api/reports/${reportId}/status`, {
+      const response = await fetch(apiUrl(`/api/reports/${reportId}/status`), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus }),

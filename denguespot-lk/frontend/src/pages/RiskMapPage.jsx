@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RiskMap from '../components/RiskMap';
+import { apiUrl } from '../services/apiConfig';
 
 export default function RiskMapPage() {
   const [zones, setZones] = useState([]);
@@ -8,7 +9,7 @@ export default function RiskMapPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('/api/moh-zones')
+    fetch(apiUrl('/api/moh-zones'))
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
