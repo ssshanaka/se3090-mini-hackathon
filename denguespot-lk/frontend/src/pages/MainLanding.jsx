@@ -43,8 +43,8 @@ export default function MainLanding() {
             <Link to="/report-hazard" className="w-full sm:w-auto px-8 py-3.5 bg-brand-700 hover:bg-brand-800 text-white text-base font-semibold rounded-xl shadow-sm hover:shadow transition-all text-center">
               Report a Hazard
             </Link>
-            <Link to="/risk-zones" className="w-full sm:w-auto px-8 py-3.5 bg-white border border-slate-300 hover:border-brand-700 text-slate-700 hover:text-brand-700 text-base font-semibold rounded-xl shadow-sm hover:shadow transition-all text-center">
-              View Risk Zones
+            <Link to="/reports" className="w-full sm:w-auto px-8 py-3.5 bg-white border border-slate-300 hover:border-brand-700 text-slate-700 hover:text-brand-700 text-base font-semibold rounded-xl shadow-sm hover:shadow transition-all text-center">
+              Public Incident Queue
             </Link>
           </div>
         </div>

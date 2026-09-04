@@ -35,6 +35,7 @@ export const registerUser = async (req, res) => {
         fullName: user.fullName,
         email: user.email,
         role: user.role,
+        mohDivision: user.mohDivision,
         token: generateToken(user._id),
       });
     } else {
@@ -58,6 +59,7 @@ export const loginUser = async (req, res) => {
         fullName: user.fullName,
         email: user.email,
         role: user.role,
+        mohDivision: user.mohDivision,
         token: generateToken(user._id),
       });
     } else {

@@ -97,9 +97,18 @@ export async function createReport(req, res) {
 }
 
 // ── GET /api/reports ─────────────────────────────────────────────────────────
-export async function getReports(_req, res) {
+export async function getReports(req, res) {
   try {
-    const reports = await HazardReport.find().sort({ createdAt: -1 });
+    const { mohDivision } = req.query;
+
+    if (mohDivision && !WESTERN_PROVINCE_MOH_ZONES.includes(mohDivision)) {
+      return res.status(400).json({ success: false, message: 'Invalid MOH division.' });
+    }
+
+    const query = mohDivision ? { mohDivision } : {};
+    const reports = await HazardReport.find(query)
+      .select('-reporterName -contactNumber -imagePublicId')
+      .sort({ createdAt: -1 });
     return res.status(200).json({ success: true, data: reports });
   } catch (error) {
     console.error('getReports error:', error);
