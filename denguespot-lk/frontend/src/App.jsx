@@ -5,7 +5,9 @@ import MainLanding from './pages/MainLanding';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import PhiDashboardPage from './pages/PhiDashboardPage';
+import PhiZoneDetailsPage from './pages/PhiZoneDetailsPage';
 import ReportHazardPage from './pages/ReportHazardPage';
+import { IncidentQueue } from './features/incident-queue/IncidentQueue';
 import RiskMapPage from './pages/RiskMapPage';
 
 export default function App() {
@@ -15,7 +17,9 @@ export default function App() {
     <Route element={<ProtectedRoute />}>
       <Route path="/dashboard" element={<MainLanding />} />
       <Route path="/phi-dashboard" element={<PhiDashboardPage />} />
+      <Route path="/phi-dashboard/zone/:id" element={<PhiZoneDetailsPage />} />
       <Route path="/report-hazard" element={<ReportHazardPage />} />
+      <Route path="/reports" element={<IncidentQueue />} />
       <Route path="/risk-zones" element={<RiskMapPage />} />
     </Route>
     <Route path="*" element={<Navigate to="/login" replace />} />

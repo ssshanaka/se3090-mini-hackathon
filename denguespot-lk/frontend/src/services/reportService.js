@@ -1,11 +1,11 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+import { apiUrl } from './apiConfig';
 
 /**
  * Submit a new hazard report.
  * @returns {{ success: boolean, data?: object, errors?: object }}
  */
 export async function submitReport(payload) {
-  const res = await fetch(`${API_BASE}/api/reports`, {
+  const res = await fetch(apiUrl('/api/reports'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -18,6 +18,6 @@ export async function submitReport(payload) {
  * @returns {{ success: boolean, data?: object[] }}
  */
 export async function fetchReports() {
-  const res = await fetch(`${API_BASE}/api/reports`);
+  const res = await fetch(apiUrl('/api/reports'));
   return res.json();
 }

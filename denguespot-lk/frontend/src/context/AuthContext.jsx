@@ -1,8 +1,8 @@
 import { createContext, useContext, useState } from 'react';
 import { clearSession, getSession, saveSession } from '../services/authService';
+import { apiUrl } from '../services/apiConfig';
 
 const AuthContext = createContext(null);
-const API_URL = 'http://localhost:5000/api/auth';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(getSession);
@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
   };
 
   const register = async (values) => {
-    const response = await fetch(`${API_URL}/signup`, {
+    const response = await fetch(apiUrl('/api/auth/signup'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values),
@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(apiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
