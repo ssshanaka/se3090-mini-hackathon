@@ -8,6 +8,7 @@ const districts = ['All Districts', 'Colombo', 'Gampaha', 'Kalutara'];
 function toReportList(payload) {
   if (Array.isArray(payload)) return payload;
   if (Array.isArray(payload?.reports)) return payload.reports;
+  if (Array.isArray(payload?.data)) return payload.data;
   return [];
 }
 

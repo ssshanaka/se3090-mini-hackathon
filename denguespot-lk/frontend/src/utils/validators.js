@@ -4,9 +4,8 @@ export function validateRegister(values, users) {
   const errors = {}; const fullName = values.fullName.trim(); const email = values.email.trim().toLowerCase();
   if (!fullName) errors.fullName = 'Please enter your full name.'; else if (fullName.length < 3) errors.fullName = 'Full name must contain at least 3 characters.';
   if (!email) errors.email = 'Please enter your email address.'; else if (!emailPattern.test(email)) errors.email = 'Please enter a valid email address (e.g., name@example.com).'; else if (users.some((user) => user.email?.toLowerCase() === email)) errors.email = 'An account with this email address already exists.';
-  if (!values.phone.trim()) errors.phone = 'Please enter your phone number.'; else if (!sriLankanPhonePattern.test(values.phone.trim())) errors.phone = 'Please enter a valid Sri Lankan phone number (e.g., 0771234567).';
   if (!values.role) errors.role = 'Please select whether you are a Resident or Health Officer.';
-  if (!values.mohDivision) errors.mohDivision = 'Please select your MOH division.';
+  if (values.role === 'phi' && !values.mohDivision) errors.mohDivision = 'Please select your MOH division.';
   if (!values.password) errors.password = 'Please enter a password.'; else if (values.password.length < 6) errors.password = 'Password must contain at least 6 characters.';
   if (!values.confirmPassword) errors.confirmPassword = 'Please confirm your password.'; else if (values.confirmPassword !== values.password) errors.confirmPassword = 'Passwords do not match.';
   return errors;
