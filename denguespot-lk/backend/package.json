@@ -8,8 +8,11 @@
     "dev": "node --watch src/server.js"
   },
   "dependencies": {
+    "cloudinary": "^1.41.3",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "mongoose": "^9.9.4"
+    "mongoose": "^9.9.4",
+    "multer": "^2.3.0",
+    "multer-storage-cloudinary": "^4.0.0"
   }
 }
