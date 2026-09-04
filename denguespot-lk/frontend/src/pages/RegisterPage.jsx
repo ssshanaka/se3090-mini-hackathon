@@ -7,7 +7,7 @@ import { validateRegister } from '../utils/validators';
 import { AuthShell } from './LoginPage';
 const divisions = ['Colombo MC', 'Kaduwela', 'Maharagama', 'Kelaniya', 'Negombo', 'Dehiwala'];
 export default function RegisterPage() {
-  const [values, setValues] = useState({ fullName: '', email: '', role: '', mohDivision: '', password: '', confirmPassword: '' }); const [errors, setErrors] = useState({}); const [success, setSuccess] = useState(''); const [processing, setProcessing] = useState(false); const { register, users } = useAuth(); const navigate = useNavigate();
+  const [values, setValues] = useState({ fullName: '', email: '', role: 'resident', mohDivision: '', password: '', confirmPassword: '' }); const [errors, setErrors] = useState({}); const [success, setSuccess] = useState(''); const [processing, setProcessing] = useState(false); const { register, users } = useAuth(); const navigate = useNavigate();
   const update = (event) => setValues((current) => ({ ...current, [event.target.name]: event.target.value }));
   const submit = async (event) => { event.preventDefault(); const nextErrors = validateRegister(values, []); setErrors(nextErrors); if (Object.keys(nextErrors).length) return; setProcessing(true); try { await register(values); setSuccess('Account created successfully. Redirecting to your dashboard…'); window.setTimeout(() => navigate('/dashboard'), 450); } catch (err) { setErrors({ email: 'Registration failed. Email might already exist.' }); setProcessing(false); } };
   const inputClass = 'w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition focus:border-brand-600 focus:ring-3 focus:ring-brand-100';
