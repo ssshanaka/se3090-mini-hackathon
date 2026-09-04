@@ -23,7 +23,9 @@ export default function Navbar() {
           <div className="flex items-center gap-8">
             <div className="hidden md:flex items-center gap-6 mr-4">
               <Link to="/risk-zones" className="text-sm font-semibold text-slate-600 hover:text-brand-700 transition-colors py-1">Risk Zones</Link>
-              <Link to="/report-hazard" className="text-sm font-semibold text-slate-600 hover:text-brand-700 transition-colors py-1">Report Hazard</Link>
+              {user?.role !== 'phi' && (
+                <Link to="/report-hazard" className="text-sm font-semibold text-slate-600 hover:text-brand-700 transition-colors py-1">Report Hazard</Link>
+              )}
               <Link to="/reports" className="text-sm font-semibold text-slate-600 hover:text-brand-700 transition-colors py-1">Public Incident Queue</Link>
             </div>
             <div className="flex items-center gap-3">

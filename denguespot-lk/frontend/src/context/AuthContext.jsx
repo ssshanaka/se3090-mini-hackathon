@@ -31,13 +31,13 @@ export function AuthProvider({ children }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-      if (!response.ok) return false;
+      if (!response.ok) return { success: false };
       const account = await response.json();
       startSession(account);
-      return true;
+      return { success: true, user: account };
     } catch (err) {
       console.error(err);
-      return false;
+      return { success: false };
     }
   };
 
